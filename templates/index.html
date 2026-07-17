@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Android Backup Professional</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>📱 Android Backup Professional</h1>
+            <div class="status">
+                <span id="device-status">
+                    <span class="status-dot checking" id="status-dot"></span>
+                    <span id="status-label">Checking...</span>
+                </span>
+                <span id="device-name" style="color:#888;font-size:13px;"></span>
+            </div>
+        </div>
+
+        <div class="grid">
+            <!-- Left: File Manager -->
+            <div class="panel">
+                <h2>📂 File Manager</h2>
+                <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap;">
+                    <button class="btn btn-secondary btn-sm" onclick="refreshFolder()">🔄 Refresh</button>
+                    <button class="btn btn-secondary btn-sm" onclick="goHome()">🏠 Home</button>
+                    <button class="btn btn-secondary btn-sm" onclick="goToDCIM()">📷 DCIM</button>
+                    <button class="btn btn-secondary btn-sm" id="toggle-files-btn" onclick="toggleFiles()">📄 Hide Files</button>
+                </div>
+                <div class="file-manager" id="file-manager">
+                    <div class="breadcrumb" id="breadcrumb"></div>
+                    <div id="folder-content">
+                        <div class="empty-folder">
+                            <div class="icon">📱</div>
+                            <p>Connect your Android device</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="margin-top:10px;display:flex;gap:10px;align-items:center;">
+                    <input type="text" id="selected-path" value="/sdcard/" style="flex:1;padding:8px 12px;background:#0f0f1a;border:1px solid #2a2a4a;border-radius:6px;color:#e0e0e0;font-size:13px;">
+                    <button class="btn btn-primary btn-sm" onclick="selectCurrentPath()">📌 Select</button>
+                </div>
+            </div>
+
+            <!-- Right: Backup Controls -->
+            <div class="panel">
+                <h2>⚙️ Backup Controls</h2>
+                
+                <div class="device-info" id="device-info">
+                    <div class="item"><span class="label">Device:</span><span class="value" id="device-model">-</span></div>
+                    <div class="item"><span class="label">Android:</span><span class="value" id="device-android">-</span></div>
+                    <div class="item"><span class="label">Storage:</span><span class="value" id="device-storage">-</span></div>
+                </div>
+                
+                <div class="form-group">
+                    <label>📁 Source Folder (Android)</label>
+                    <input type="text" id="source" value="/sdcard/DCIM/" placeholder="/sdcard/folder/">
+                </div>
+                
+                <div class="form-group">
+                    <label>💾 Destination Folder (Windows)</label>
+                    <div class="folder-input-group">
+                        <input type="text" id="destination" value="backup" placeholder="C:\Backup\...">
+                        <button class="btn btn-secondary" onclick="browseOutput()" style="padding:8px 16px;white-space:nowrap;">📂 Browse</button>
+                        <button class="btn btn-secondary" onclick="openOutputFolder()" style="padding:8px 16px;white-space:nowrap;">📁 Open</button>
+                    </div>
+                </div>
+                
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="btn-start" onclick="startBackup()">▶ Start Backup</button>
+                    <button class="btn btn-danger" id="btn-stop" onclick="stopBackup()" disabled>⏹ Stop</button>
+                </div>
+                
+                <!-- Progress -->
+                <div style="margin-top:15px;">
+                    <div class="progress-container">
+                        <div class="progress-fill" id="progress-fill" style="width:0%;">0%</div>
+                    </div>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="label">Processed</div>
+                            <div class="value" id="stat-processed">0 B</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="label">Speed</div>
+                            <div class="value" id="stat-speed">0 B/s</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="label">Elapsed</div>
+                            <div class="value" id="stat-elapsed">0s</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="label">ETA</div>
+                            <div class="value" id="stat-eta">-</div>
+                        </div>
+                    </div>
+                    
+                    <div class="status-bar">
+                        <span class="status-text">Status: <span class="highlight" id="status-text">Idle</span></span>
+                        <span class="status-text" id="status-message" style="color:#888;font-size:13px;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logs -->
+        <div class="panel" style="margin-top:20px;">
+            <h2>📝 Activity Log</h2>
+            <div class="log-container" id="log-container">
+                <div class="log-entry"><span class="time">[System]</span> Android Backup Pro started</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
